@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import React from "react";
 import { Provider, atom } from "jotai";
+import { useAtomDevtools } from "jotai/devtools";
 import { AtomicDebugger, useAtomicDevtool } from "atomic-devtools";
-import { setCommentRange } from "typescript";
 
 console.log("AtomicDebugger", AtomicDebugger);
 console.log("useAtomicDevtool", useAtomicDevtool);
@@ -65,6 +65,7 @@ const Uppercase = () => {
 
 const Test = () => {
   const [value] = useAtomicDevtool(test10, "test10");
+  useAtomDevtools(test10);
   console.count("Test");
 
   console.log("value------->", value);
