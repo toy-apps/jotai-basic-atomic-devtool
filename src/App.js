@@ -2,6 +2,7 @@
 import React from "react";
 import { Provider, atom } from "jotai";
 import { AtomicDebugger, useAtomicDevtool } from "atomic-devtools";
+import { setCommentRange } from "typescript";
 
 console.log("AtomicDebugger", AtomicDebugger);
 console.log("useAtomicDevtool", useAtomicDevtool);
@@ -43,22 +44,29 @@ const Input = () => {
   const usedTextAtom = useAtomicDevtool(textAtom, "textAtom");
   const text = usedTextAtom[0];
   const setText = usedTextAtom[1];
+  console.count("INPUT");
 
   return <input value={text} onChange={(e) => setText(e.target.value)} />;
 };
 
 const CharCount = () => {
   const [len] = useAtomicDevtool(textLenAtom, "textLenAtom");
+  console.count("CharCount");
+
   return <div>Length: {len}</div>;
 };
 
 const Uppercase = () => {
   const [uppercase] = useAtomicDevtool(uppercaseAtom, "uppercaseAtom");
+  console.count("Uppercase");
+
   return <div>Uppercase: {uppercase}</div>;
 };
 
 const Test = () => {
   const [value] = useAtomicDevtool(test10, "test10");
+  console.count("Test");
+
   console.log("value------->", value);
   return null;
 };

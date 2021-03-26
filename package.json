@@ -12,7 +12,7 @@
     "serve": "serve -s build"
   },
   "dependencies": {
-    "atomic-devtools": "^1.0.25",
+    "atomic-devtools": "^1.0.33",
     "jotai": "^0.15.3",
     "react": "17.0.1",
     "react-dom": "17.0.1",
