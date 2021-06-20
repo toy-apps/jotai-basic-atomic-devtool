@@ -1,11 +1,12 @@
 /* eslint-disable no-console */
 import React from "react";
-import { Provider, atom } from "jotai";
-import { useAtomDevtools } from "jotai/devtools";
+import { Provider, atom, useAtom } from "jotai";
+import {
+  useAtomDevtools,
+  useAtomsSnapshot,
+  useGotoAtomsSnapshot,
+} from "jotai/devtools";
 import { AtomicDebugger, useAtomicDevtool } from "atomic-devtools";
-
-console.log("AtomicDebugger", AtomicDebugger);
-console.log("useAtomicDevtool", useAtomicDevtool);
 
 const textAtom = atom("hello");
 const textLenAtom = atom((get) => get(textAtom).length);
@@ -44,21 +45,18 @@ const Input = () => {
   const usedTextAtom = useAtomicDevtool(textAtom, "textAtom");
   const text = usedTextAtom[0];
   const setText = usedTextAtom[1];
-  console.count("INPUT");
 
   return <input value={text} onChange={(e) => setText(e.target.value)} />;
 };
 
 const CharCount = () => {
   const [len] = useAtomicDevtool(textLenAtom, "textLenAtom");
-  console.count("CharCount");
 
   return <div>Length: {len}</div>;
 };
 
 const Uppercase = () => {
   const [uppercase] = useAtomicDevtool(uppercaseAtom, "uppercaseAtom");
-  console.count("Uppercase");
 
   return <div>Uppercase: {uppercase}</div>;
 };
@@ -66,10 +64,33 @@ const Uppercase = () => {
 const Test = () => {
   const [value] = useAtomicDevtool(test10, "test10");
   useAtomDevtools(test10);
-  console.count("Test");
-
-  console.log("value------->", value);
   return null;
+};
+
+const snapShot = atom();
+
+const SaveSnapshot = () => {
+  const [savedSnapshots, setSnapshots] = useAtom(snapShot);
+  let currentSnapshot = useAtomsSnapshot();
+
+  console.log("current SS -> ", currentSnapshot);
+
+  const clickHandler = () => {
+    setSnapshots(currentSnapshot);
+    console.log("SAVED --> ", savedSnapshots);
+  };
+
+  return <button onClick={clickHandler}>SAVE SNAPSHOT</button>;
+};
+
+const GoToSnapshot = () => {
+  const [savedSnapshots] = useAtom(snapShot);
+  const goToSnapshot = useGotoAtomsSnapshot();
+  const clickHandler = () => {
+    if (savedSnapshots) goToSnapshot(savedSnapshots);
+  };
+
+  return <button onClick={clickHandler}>GO TO SNAPSHOT</button>;
 };
 
 function App() {
@@ -80,6 +101,8 @@ function App() {
         <Input />
         <CharCount />
         <Uppercase />
+        <SaveSnapshot />
+        <GoToSnapshot />
         <Test />
       </AtomicDebugger>
     </Provider>
